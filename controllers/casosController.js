@@ -32,10 +32,10 @@ async function postCaso(req, res) {
         if (data.status !== "aberto" && data.status !== "solucionado") {
             return res.status(400).json({ message: "Status deve ser 'aberto' ou 'solucionado'" });
         }
-        if (!data.agente_id) {
+        if (!data.agenteId) {
             return res.status(400).json({ message: "ID do agente é obrigatório" });
         }
-        if (!agentesRepository.readAgente(data.agente_id)) {
+        if (!agentesRepository.readAgente(data.agenteId)) {
             return res.status(404).json({ message: "Agente não encontrado para o ID fornecido" });
         }
         const newCaso = await casosRepository.createCaso(data);
@@ -65,10 +65,10 @@ async function putCasoById(req, res) {
         if (data.status !== "aberto" && data.status !== "solucionado") {
             return res.status(400).json({ message: "Status deve ser 'aberto' ou 'solucionado'" });
         }
-        if (!data.agente_id) {
+        if (!data.agenteId) {
             return res.status(400).json({ message: "ID do agente é obrigatório" });
         }
-        if (!agentesRepository.findById(data.agente_id)) {
+        if (!agentesRepository.findById(data.agenteId)) {
             return res.status(404).json({ message: "Agente não encontrado para o ID fornecido" });
         }
 
@@ -84,7 +84,7 @@ async function patchCasoById(req, res) {
         }  
 
         const data = req.body;
-        if (!data.titulo && !data.descricao && !data.status && !data.agente_id) {
+        if (!data.titulo && !data.descricao && !data.status && !data.agenteId) {
             return res.status(400).json({ message: "Pelo menos um campo deve ser atualizado" });
         }
         if (data.id) {
@@ -93,7 +93,7 @@ async function patchCasoById(req, res) {
         if (data.status && data.status !== "aberto" && data.status !== "solucionado") {
             return res.status(400).json({ message: "Status deve ser 'aberto' ou 'solucionado'" });
         }
-        if (data.agente_id && !agentesRepository.readAgente(data.agente_id)) {
+        if (data.agenteId && !await agentesRepository.readAgente(data.agenteId)) {
             return res.status(404).json({ message: "Agente não encontrado para o ID fornecido" });
         }
         const updatedCaso = await casosRepository.patchCaso(casoId, data);

@@ -1,4 +1,5 @@
 const db = require('../db/db');
+const { up } = require('../db/migrations/20250809212213_agentes');
 async function readAllCasos() {
     try {
         const casos = await db('casos').select('*');
@@ -12,7 +13,7 @@ async function readAllCasos() {
 async function readCaso(id) {
     try {
         const caso = await db('casos').where({id: id});
-        if (!caso) {
+        if (caso.length === 0) {
             return false;
         }
         return caso[0];
@@ -25,7 +26,7 @@ async function readCaso(id) {
 async function createCaso(object) {
     try {
         const newCaso = await db('casos').insert(object,['*']);
-        return newCaso;
+        return newCaso[0];
     } catch (error) {
         console.log(error);
         return false;
@@ -35,7 +36,7 @@ async function createCaso(object) {
 async function updateCaso(id, fieldsToUpdate) {
     try {
         const updatedCaso = await db('casos').where({id: id}).update(fieldsToUpdate, ['*']);
-        if (!updatedCaso) {
+        if (!updatedCaso || updatedCaso.length === 0) {
             return false;
         }
         return updatedCaso[0];
@@ -48,7 +49,7 @@ async function updateCaso(id, fieldsToUpdate) {
 async function patchCaso(id, fieldsToUpdate) {
     try {
         const updatedCaso = await db('casos').where({id: id}).update(fieldsToUpdate, ['*']);
-        if (!updatedCaso) {
+        if (!updatedCaso || updatedCaso.length === 0) {
             return false;
         }
         return updatedCaso[0];
@@ -61,7 +62,7 @@ async function patchCaso(id, fieldsToUpdate) {
 async function removeCaso(id) {
     try {
         const removedCaso = await db('casos').where({id: id}).del();
-        if (!removedCaso) {
+        if (removeCaso.length === 0) {
             return false;
         }
         return true;

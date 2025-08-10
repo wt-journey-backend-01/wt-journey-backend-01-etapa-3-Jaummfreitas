@@ -16,6 +16,7 @@ async function getAgenteById(req, res) {
 
 async function postAgente(req, res) {
         const data = req.body;
+        const today = new Date()
         if (data.id) {
             return res.status(400).json({ message: "Não pode conter ID" });
         }
@@ -27,6 +28,9 @@ async function postAgente(req, res) {
         }
         if (data.dataDeIncorporacao && !/^\d{4}-\d{2}-\d{2}$/.test(data.dataDeIncorporacao)) {
             return res.status(400).json({ message: "Data de incorporação deve seguir o formato YYYY-MM-DD" });
+        }
+        if (data.dataDeIncorporacao > today) {
+            return res.status(400).json({ message: "Data de incorporação não pode ser futura" });
         }
         if (!data.cargo) {
             return res.status(400).json({ message: "Cargo é obrigatório" });
