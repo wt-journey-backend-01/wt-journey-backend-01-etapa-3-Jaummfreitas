@@ -1,20 +1,20 @@
 const agentesRepository = require("../repositories/agentesRepository")
-function getAllAgentes(req, res) {
+async function getAllAgentes(req, res) {
 
-        const agentes = agentesRepository.readAllAgentes()
+        const agentes = await agentesRepository.readAllAgentes()
         res.status(200).json(agentes)
 }
 
-function getAgenteById(req, res) {
+async function getAgenteById(req, res) {
         const agenteId = req.params.id;
-        const agente = agentesRepository.readAgente(agenteId);
+        const agente = await agentesRepository.readAgente(agenteId);
         if (!agente) {
             return res.status(404).json({ message: "Agente não encontrado"});
         }  
         res.status(200).json(agente);
 };
 
-function postAgente(req, res) {
+async function postAgente(req, res) {
         const data = req.body;
         if (data.id) {
             return res.status(400).json({ message: "Não pode conter ID" });
@@ -31,14 +31,14 @@ function postAgente(req, res) {
         if (!data.cargo) {
             return res.status(400).json({ message: "Cargo é obrigatório" });
         }
-        
-        const newAgente =agentesRepository.createAgente(data);
+
+        const newAgente = await agentesRepository.createAgente(data);
         res.status(201).json(newAgente);
 };
 
-function putAgenteById(req, res) {
+async function putAgenteById(req, res) {
         const agenteId = req.params.id;
-        const agente = agentesRepository.readAgente(agenteId);
+        const agente = await agentesRepository.readAgente(agenteId);
         if (!agente) {
             return res.status(404).json({ message: "Agente não encontrado"});
         }  
@@ -60,13 +60,13 @@ function putAgenteById(req, res) {
             return res.status(400).json({ message: "Cargo é obrigatório" });
         }
 
-        const updatedAgente = agentesRepository.updateAgente(agenteId, data);
+        const updatedAgente = await agentesRepository.updateAgente(agenteId, data);
         res.status(200).json(updatedAgente);
 };
 
-function patchAgenteById(req, res) {
+async function patchAgenteById(req, res) {
         const agenteId = req.params.id;
-        const agente = agentesRepository.readAgente(agenteId);
+        const agente = await agentesRepository.readAgente(agenteId);
         if (!agente) {
             return res.status(404).json({ message: "Agente não encontrado"});
         }  
@@ -81,18 +81,18 @@ function patchAgenteById(req, res) {
         if (data.dataDeIncorporacao && !/^\d{4}-\d{2}-\d{2}$/.test(data.dataDeIncorporacao)) {
             return res.status(400).json({ message: "Data de incorporação deve seguir o formato YYYY-MM-DD" });
         }
-        const updatedAgente = agentesRepository.patchAgente(agenteId, data);
+        const updatedAgente = await agentesRepository.patchAgente(agenteId, data);
         res.status(200).json(updatedAgente);
 };
 
-function deleteAgenteById(req, res) {
+async function deleteAgenteById(req, res) {
         const agenteId = req.params.id;
-        const agente = agentesRepository.readAgente(agenteId);
+        const agente = await agentesRepository.readAgente(agenteId);
         if (!agente) {
             return res.status(404).json({ message: "Agente não encontrado"});
         }  
 
-        agentesRepository.removeAgente(agenteId);
+        await agentesRepository.removeAgente(agenteId);
         res.status(204).send();
 };
 

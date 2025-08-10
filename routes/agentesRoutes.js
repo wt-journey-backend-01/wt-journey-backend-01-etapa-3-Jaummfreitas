@@ -33,8 +33,7 @@ router.delete('/:id', agentesController.deleteAgenteById)
 *         - cargo
 *       properties:
 *         id:
-*           type: string
-*           format: uuid
+*           type: integer
 *           description: O ID gerado automaticamente para o agente.
 *         nome:
 *           type: string
@@ -47,7 +46,7 @@ router.delete('/:id', agentesController.deleteAgenteById)
 *           type: string
 *           description: O cargo do agente.
 *       example:
-*         id: "401bccf5-cf9e-489d-8412-446cd169a0f1"
+*         id: 1
 *         nome: "Clara Monteiro"
 *         dataDeIncorporacao: "2010-05-15" # MUDOU: formato da data
 *         cargo: "Delegada Titular"
@@ -112,8 +111,7 @@ router.get('/', agentesController.getAllAgentes)
  *       - in: path
  *         name: id
  *         schema:
- *           type: string
- *           format: uuid
+ *           type: integer
  *         required: true
  *         description: "O ID do agente."
  *     responses:
@@ -162,8 +160,7 @@ router.post('/', agentesController.postAgente)
  *       - in: path
  *         name: id
  *         schema:
- *           type: string
- *           format: uuid
+ *           type: integer
  *         required: true
  *         description: "O ID do agente a ser atualizado."
  *     requestBody:
@@ -192,8 +189,7 @@ router.put('/:id', agentesController.putAgenteById)
  *       - in: path
  *         name: id
  *         schema:
- *           type: string
- *           format: uuid
+ *           type: integer
  *         required: true
  *         description: "O ID do agente a ser atualizado."
  *     requestBody:
@@ -233,8 +229,7 @@ router.patch('/:id', agentesController.patchAgenteById)
  *       - in: path
  *         name: id
  *         schema:
- *           type: string
- *           format: uuid
+ *           type: integer
  *         required: true
  *         description: "O ID do agente a ser deletado."
  *     responses:

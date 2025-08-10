@@ -31,11 +31,10 @@ router.delete('/:id', casosController.deleteCasoById)
  *         - titulo
  *         - descricao
  *         - status
- *         - agente_id
+ *         - agenteId
  *       properties:
  *         id:
- *           type: string
- *           format: uuid
+ *           type: integer
  *         titulo:
  *           type: string
  *         descricao:
@@ -43,15 +42,14 @@ router.delete('/:id', casosController.deleteCasoById)
  *         status:
  *           type: string
  *           enum: [aberto, solucionado]
- *         agente_id:
- *           type: string
- *           format: uuid
+ *         agenteId:
+ *           type: integer
  *       example:
- *         id: "cfd686d4-957c-4ca5-85bf-2895ca535569"
+ *         id: 1
  *         titulo: "Investigação de Homicídio"
  *         descricao: "Vítima encontrada em área urbana. Suspeito identificado."
  *         status: "aberto"
- *         agente_id: "401bccf5-cf9e-489d-8412-446cd169a0f1"
+ *         agenteId: 2
 
  *     NewCaso:
  *       type: object
@@ -59,7 +57,7 @@ router.delete('/:id', casosController.deleteCasoById)
  *         - titulo
  *         - descricao
  *         - status
- *         - agente_id
+ *         - agenteId
  *       properties:
  *         titulo:
  *           type: string
@@ -68,14 +66,13 @@ router.delete('/:id', casosController.deleteCasoById)
  *         status:
  *           type: string
  *           enum: [aberto, solucionado]
- *         agente_id:
- *           type: string
- *           format: uuid
+ *         agenteId:
+ *           type: integer
  *       example:
  *         titulo: "Investigação de Homicídio"
  *         descricao: "Vítima encontrada em área urbana. Suspeito identificado."
  *         status: "aberto"
- *         agente_id: "401bccf5-cf9e-489d-8412-446cd169a0f1"
+ *         agenteId: 2
  */
 
 /**
@@ -92,10 +89,9 @@ router.delete('/:id', casosController.deleteCasoById)
  *           enum: [aberto, solucionado]
  *         description: "Filtra os casos pelo status."
  *       - in: query
- *         name: agente_id
+ *         name: agenteId
  *         schema:
- *           type: string
- *           format: uuid
+ *           type: integer
  *         description: "Filtra os casos pelo ID do agente responsável."
  *       - in: query
  *         name: search
@@ -124,8 +120,7 @@ router.get('/', casosController.getAllCasos)
  *       - in: path
  *         name: id
  *         schema:
- *           type: string
- *           format: uuid
+ *           type: integer
  *         required: true
  *         description: "O ID do caso."
  *     responses:
@@ -176,8 +171,7 @@ router.post('/', casosController.postCaso)
  *       - in: path
  *         name: id
  *         schema:
- *           type: string
- *           format: uuid
+ *           type: integer
  *         required: true
  *         description: "O ID do caso a ser atualizado."
  *     requestBody:
@@ -206,8 +200,7 @@ router.put('/:id', casosController.putCasoById)
  *       - in: path
  *         name: id
  *         schema:
- *           type: string
- *           format: uuid
+ *           type: integer
  *         required: true
  *         description: "O ID do caso a ser atualizado."
  *     requestBody:
@@ -224,9 +217,8 @@ router.put('/:id', casosController.putCasoById)
  *               status:
  *                 type: string
  *                 enum: [aberto, solucionado]
- *               agente_id:
- *                 type: string
- *                 format: uuid
+ *               agenteId:
+ *                 type: integer
  *             example:
  *               status: "solucionado"
  *     responses:
@@ -249,8 +241,7 @@ router.patch('/:id', casosController.patchCasoById)
  *       - in: path
  *         name: id
  *         schema:
- *           type: string
- *           format: uuid
+ *           type: integer
  *         required: true
  *         description: "O ID do caso a ser deletado."
  *     responses:

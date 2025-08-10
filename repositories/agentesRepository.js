@@ -12,7 +12,7 @@ async function readAllAgentes() {
 async function readAgente(id) {
     try {
         const agente = await db('agentes').where({id: id});
-        if (!agente) {
+        if (agente.length === 0) {
             return false;
         }
         return agente[0];
@@ -35,7 +35,7 @@ async function createAgente(object) {
 async function updateAgente(id, fieldsToUpdate) {
     try {
         const updatedAgente = await db('agentes').where({id: id}).update(fieldsToUpdate, ['*']);
-        if (!updatedAgente) {
+        if (updatedAgente.length === 0) {
             return false;
         }
         return updatedAgente[0];
@@ -48,7 +48,7 @@ async function updateAgente(id, fieldsToUpdate) {
 async function patchAgente(id, fieldsToUpdate) {
     try {
         const updatedAgente = await db('agentes').where({id: id}).update(fieldsToUpdate, ['*']);
-        if (!updatedAgente) {
+        if (updatedAgente.length === 0) {
             return false;
         }
         return updatedAgente[0];
@@ -61,7 +61,7 @@ async function patchAgente(id, fieldsToUpdate) {
 async function removeAgente(id) {
     try {
         const removedAgente = await db('agentes').where({id: id}).del();
-        if (!removedAgente) {
+        if (removedAgente.length === 0) {
             return false;
         }
         return true;
