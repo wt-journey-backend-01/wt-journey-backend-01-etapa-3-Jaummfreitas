@@ -17,15 +17,21 @@ async function getAllCasos(req, res) {
 };
 
 async function getCasoById(req, res) {
+    try {
         const casoId = req.params.id;
         const caso = await casosRepository.readCaso(casoId);
         if (!caso) {
             return res.status(404).json({ message: "Caso não encontrado"});
         }  
         res.status(200).json(caso);
+    } catch (error) {
+        console.error('Erro ao buscar caso:', error);
+        res.status(500).json({ message: "Erro interno do servidor" });
+    }
 };
 
 async function postCaso(req, res) {
+    try {
         const data = req.body;
         if (data.id) {
             return res.status(400).json({ message: "Não pode conter ID" });
@@ -49,10 +55,18 @@ async function postCaso(req, res) {
             return res.status(404).json({ message: "Agente não encontrado para o ID fornecido" });
         }
         const newCaso = await casosRepository.createCaso(data);
+        if (!newCaso) {
+            return res.status(500).json({ message: "Erro ao criar caso" });
+        }
         res.status(201).json(newCaso);
+    } catch (error) {
+        console.error('Erro ao criar caso:', error);
+        res.status(500).json({ message: "Erro interno do servidor" });
+    }
 };
 
 async function putCasoById(req, res) {
+    try {
         const casoId = req.params.id;
         const caso = await casosRepository.readCaso(casoId);
         if (!caso) {
@@ -83,10 +97,18 @@ async function putCasoById(req, res) {
         }
 
         const updatedCaso = await casosRepository.updateCaso(casoId, data);
+        if (!updatedCaso) {
+            return res.status(500).json({ message: "Erro ao atualizar caso" });
+        }
         res.status(200).json(updatedCaso);
+    } catch (error) {
+        console.error('Erro ao atualizar caso:', error);
+        res.status(500).json({ message: "Erro interno do servidor" });
+    }
 };
 
 async function patchCasoById(req, res) {
+    try {
         const casoId = req.params.id;
         const caso = await casosRepository.readCaso(casoId);
         if (!caso) {
@@ -107,18 +129,33 @@ async function patchCasoById(req, res) {
             return res.status(404).json({ message: "Agente não encontrado para o ID fornecido" });
         }
         const updatedCaso = await casosRepository.patchCaso(casoId, data);
+        if (!updatedCaso) {
+            return res.status(500).json({ message: "Erro ao atualizar caso" });
+        }
         res.status(200).json(updatedCaso);
+    } catch (error) {
+        console.error('Erro ao atualizar caso:', error);
+        res.status(500).json({ message: "Erro interno do servidor" });
+    }
 };
 
 async function deleteCasoById(req, res) {
+    try {
         const casoId = req.params.id;
         const caso = await casosRepository.readCaso(casoId);
         if (!caso) {
             return res.status(404).json({ message: "Caso não encontrado"});
         }  
 
-        await casosRepository.removeCaso(casoId);
+        const result = await casosRepository.removeCaso(casoId);
+        if (result === false) {
+            return res.status(500).json({ message: "Erro ao deletar caso" });
+        }
         res.status(204).send();
+    } catch (error) {
+        console.error('Erro ao deletar caso:', error);
+        res.status(500).json({ message: "Erro interno do servidor" });
+    }
 };
 
 module.exports = {
