@@ -1,9 +1,19 @@
 const casosRepository = require("../repositories/casosRepository");
 const agentesRepository = require("../repositories/agentesRepository");
 async function getAllCasos(req, res) {
-
-        const casos = await casosRepository.readAllCasos()
-        res.status(200).json(casos)
+    try {
+        const { status, agenteId, search } = req.query;
+        const casos = await casosRepository.readAllCasos({ status, agenteId, search });
+        
+        if (casos === false) {
+            return res.status(500).json({ message: "Erro interno do servidor" });
+        }
+        
+        res.status(200).json(casos);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Erro interno do servidor" });
+    }
 };
 
 async function getCasoById(req, res) {

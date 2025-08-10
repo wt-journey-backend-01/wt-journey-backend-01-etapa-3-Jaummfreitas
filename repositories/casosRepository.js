@@ -1,8 +1,22 @@
 const db = require('../db/db');
-const { up } = require('../db/migrations/20250809212213_agentes');
-async function readAllCasos() {
+
+async function readAllCasos(filters = {}) {
     try {
-        const casos = await db('casos').select('*');
+        const query = db('casos').select('*');
+
+        if (filters.status) {
+            query.where('status', filters.status);
+        }
+        if (filters.agenteId) {
+            query.where('agenteId', filters.agenteId);
+        }
+        if (filters.search) {
+            query.where(function() {
+                this.where('titulo', 'ilike', `%${filters.search}%`).orWhere('descricao', 'ilike', `%${filters.search}%`)
+            });
+        }
+
+        const casos = await query;
         return casos;
     } catch (error) {
         console.log(error);
@@ -25,7 +39,7 @@ async function readCaso(id) {
 
 async function createCaso(object) {
     try {
-        const newCaso = await db('casos').insert(object,['*']);
+        const newCaso = await db('casos').insert(object).returning('*');
         return newCaso[0];
     } catch (error) {
         console.log(error);
@@ -35,7 +49,7 @@ async function createCaso(object) {
 
 async function updateCaso(id, fieldsToUpdate) {
     try {
-        const updatedCaso = await db('casos').where({id: id}).update(fieldsToUpdate, ['*']);
+        const updatedCaso = await db('casos').where({ id }).update(fieldsToUpdate).returning('*');
         if (!updatedCaso || updatedCaso.length === 0) {
             return false;
         }
@@ -48,7 +62,7 @@ async function updateCaso(id, fieldsToUpdate) {
 
 async function patchCaso(id, fieldsToUpdate) {
     try {
-        const updatedCaso = await db('casos').where({id: id}).update(fieldsToUpdate, ['*']);
+        const updatedCaso = await db('casos').where({ id }).update(fieldsToUpdate).returning('*');
         if (!updatedCaso || updatedCaso.length === 0) {
             return false;
         }

@@ -16,8 +16,11 @@ async function getAgenteById(req, res) {
 
 async function postAgente(req, res) {
         const data = req.body;
-        const today = new Date()
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
         const incorpDate = new Date(data.dataDeIncorporacao);
+        incorpDate.setHours(0, 0, 0, 0); 
+
         if (data.id) {
             return res.status(400).json({ message: "Não pode conter ID" });
         }
