@@ -62,7 +62,7 @@ async function patchCaso(id, fieldsToUpdate) {
 async function removeCaso(id) {
     try {
         const removedCaso = await db('casos').where({id: id}).del();
-        if (removeCaso.length === 0) {
+        if (removedCaso === 0) {
             return false;
         }
         return true;

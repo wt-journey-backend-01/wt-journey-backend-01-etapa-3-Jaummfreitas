@@ -35,7 +35,7 @@ async function postCaso(req, res) {
         if (!data.agenteId) {
             return res.status(400).json({ message: "ID do agente é obrigatório" });
         }
-        if (!agentesRepository.readAgente(data.agenteId)) {
+        if (!await agentesRepository.readAgente(data.agenteId)) {
             return res.status(404).json({ message: "Agente não encontrado para o ID fornecido" });
         }
         const newCaso = await casosRepository.createCaso(data);
@@ -68,7 +68,7 @@ async function putCasoById(req, res) {
         if (!data.agenteId) {
             return res.status(400).json({ message: "ID do agente é obrigatório" });
         }
-        if (!agentesRepository.findById(data.agenteId)) {
+        if (!await agentesRepository.readAgente(data.agenteId)) {
             return res.status(404).json({ message: "Agente não encontrado para o ID fornecido" });
         }
 
